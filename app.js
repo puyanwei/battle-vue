@@ -38,21 +38,19 @@ new Vue({
         },
         checkWin: function() {
             if (this.computerHealth <= 0) {
-                if (confirm('YOU WON! New Game?')) {
-                    this.startGame();
-                } else {
-                    this.isRunning = false;
-                }
-                return true;
+                this.alertBox('YOU WIN! New Game?');
             } else if (this.playerHealth <= 0) {
-                if (confirm('LOSER!!! New Game?')) {
-                    this.startGame();
-                } else {
-                    this.isRunning = false;
-                }
-                return true;
+                this.alertBox('LOSER!!! New Game?');
             }
             return false;
+        },
+        alertBox: function(message) {
+            if (confirm(message)) {
+                this.startGame();
+            } else {
+                this.isRunning = false;
+            }
+            return true;
         },
     },
 });
