@@ -13,9 +13,27 @@ new Vue({
         },
         attack: function() {
             this.computerHealth -= this.randomNumber(10, 3);
+            this.playerHealth -= this.randomNumber(10, 3);
+            if (this.computerHealth <= 0) {
+                alert('YOU WIN!!!!');
+                this.isRunning = false;
+            }
+            if (this.playerHealth <= 0) {
+                alert('YOU LOSE!!!!');
+                this.isRunning = false;
+            }
         },
         specialAttack: function() {
             this.computerHealth -= this.randomNumber(30, 5);
+            this.playerHealth -= this.randomNumber(30, 5);
+            if (this.computerHealth <= 0) {
+                alert('YOU WIN!!!!');
+                this.isRunning = false;
+            }
+            if (this.playerHealth <= 0) {
+                alert('YOU LOSE!!!!');
+                this.isRunning = false;
+            }
         },
         heal: function() {
             this.playerHealth += 10;
