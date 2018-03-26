@@ -12,27 +12,17 @@ new Vue({
             this.computerHealth = 100;
         },
         attack: function() {
-            this.computerHealth -= this.randomNumber(10, 3);
-            this.playerHealth -= this.randomNumber(10, 3);
-            if (this.computerHealth <= 0) {
-                alert('YOU WIN!!!!');
-                this.isRunning = false;
-            }
-            if (this.playerHealth <= 0) {
-                alert('YOU LOSE!!!!');
-                this.isRunning = false;
+            this.computerHealth -= this.randomDamage(10, 3);
+            this.playerHealth -= this.randomDamage(10, 3);
+            if (this.checkWin()) {
+                return;
             }
         },
         specialAttack: function() {
-            this.computerHealth -= this.randomNumber(30, 5);
-            this.playerHealth -= this.randomNumber(30, 5);
-            if (this.computerHealth <= 0) {
-                alert('YOU WIN!!!!');
-                this.isRunning = false;
-            }
-            if (this.playerHealth <= 0) {
-                alert('YOU LOSE!!!!');
-                this.isRunning = false;
+            this.computerHealth -= this.randomDamage(30, 5);
+            this.playerHealth -= this.randomDamage(30, 5);
+            if (this.checkWin()) {
+                return;
             }
         },
         heal: function() {
@@ -43,8 +33,26 @@ new Vue({
             this.playerHealth = 100;
             this.computerHealth = 100;
         },
-        randomNumber: function(min, max) {
+        randomDamage: function(min, max) {
             return Math.floor(Math.random() * min, max);
+        },
+        checkWin: function() {
+            if (this.computerHealth <= 0) {
+                if (confirm('YOU WON! New Game?')) {
+                    this.startGame();
+                } else {
+                    this.isRunning = false;
+                }
+                return true;
+            } else if (this.playerHealth <= 0) {
+                if (confirm('LOSER!!! New Game?')) {
+                    this.startGame();
+                } else {
+                    this.isRunning = false;
+                }
+                return true;
+            }
+            return false;
         },
     },
 });
