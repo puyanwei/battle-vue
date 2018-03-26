@@ -3,6 +3,11 @@ new Vue({
     data: {
         playerHealth: 100,
         computerHealth: 100,
-        gameStart: false,
+        isRunning: false,
+    },
+    methods: {
+        startGame: function() {
+            this.isRunning = true;
+        },
     },
 });
