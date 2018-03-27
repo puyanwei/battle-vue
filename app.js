@@ -13,23 +13,28 @@ new Vue({
             this.computerHealth = 100;
             this.clearLog();
         },
-        attackController: function(attacker, isPlayer, maxRange, minRange) {
+        attackController: function(attacker, maxRange, minRange) {
             let damage = this.randomDamage(maxRange, minRange);
-            isPlayer
-                ? (this.computerHealth -= damage)
-                : (this.playerHealth -= damage);
+            let receiver;
+            if (attacker === 'player') {
+                this.computerHealth -= damage;
+                this.playerHealth -= damage;
+                receiver = 'computer';
+            } else {
+                receiver = 'player';
+            }
             if (this.checkWin()) {
                 return;
             }
-            this.addToLog(attacker, isPlayer, damage);
+            this.addToLog(attacker, receiver, damage);
         },
         attack: function() {
-            this.attackController('player', true, 10, 3);
-            this.attackController('computer', false, 10, 3);
+            this.attackController('player', 10, 3);
+            this.attackController('computer', 10, 3);
         },
         specialAttack: function() {
-            this.attackController('player', true, 30, 5);
-            this.attackController('computer', false, 30, 5);
+            this.attackController('player', 30, 5);
+            this.attackController('computer', 30, 5);
         },
         heal: function() {
             if (this.playerHealth <= 90) {
@@ -67,10 +72,10 @@ new Vue({
             }
             return true;
         },
-        addToLog: function(attacker, isPlayer, damage) {
+        addToLog: function(attacker, receiver, damage) {
             this.turns.unshift({
-                isPlayer: isPlayer,
-                text: attacker + ' hits Computer for ' + damage,
+                isPlayer: attacker === 'player',
+                text: attacker + ' hits ' + receiver + ' for ' + damage,
             });
         },
         clearLog: function() {
