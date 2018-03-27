@@ -20,8 +20,8 @@ new Vue({
             }
         },
         specialAttack: function() {
-            this.computerHealth -= this.randomDamage(30, 5);
-            this.playerHealth -= this.randomDamage(30, 5);
+            this.attacking('player', true, 30, 5);
+            this.attacking('computer', false, 30, 5);
             if (this.checkWin()) {
                 return;
             }
@@ -31,6 +31,13 @@ new Vue({
                 this.playerHealth += 10;
             } else {
                 this.playerHealth = 100;
+            }
+            if (
+                this.turns.unshift({
+                    isPlayer: true,
+                    text: 'Player heals for ' + 10,
+                })
+            ) {
             }
         },
         restart: function() {
