@@ -15,16 +15,17 @@ new Vue({
         },
         attackController: function(attacker, maxRange, minRange) {
             let receiver = this.setReceiver(attacker);
-            let damage = 0;
+            let damage = this.randomDamage(maxRange, minRange);
+            this.deductEnemyHealth(attacker, damage);
+            this.addToLog(attacker, receiver, damage);
+        },
+
+        deductEnemyHealth: function(attacker, damage) {
             if (attacker === 'player') {
-                damage = this.randomDamage(maxRange, minRange);
                 this.computerHealth -= damage;
-            }
-            if (attacker === 'computer') {
-                damage = this.randomDamage(maxRange, minRange);
+            } else {
                 this.playerHealth -= damage;
             }
-            this.addToLog(attacker, receiver, damage);
         },
         attack: function() {
             this.attackController('player', 10, 3);
