@@ -10,7 +10,8 @@
     transition: width 500ms;
 }
 
-.controls, .log {
+.controls,
+.log {
     margin-top: 30px;
     text-align: center;
     padding: 10px;
@@ -85,10 +86,10 @@ button {
     background-color: #76ff7e;
 }
 
-#give-up {
+#restart {
     background-color: #ffffff;
 }
 
-#give-up:hover {
+#restart:hover {
     background-color: #c7c7c7;
 }

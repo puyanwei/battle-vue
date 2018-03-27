@@ -14,15 +14,20 @@ new Vue({
             this.clearLog();
         },
         attackController: function(attacker, maxRange, minRange) {
-            let damage = this.randomDamage(maxRange, minRange);
+            let receiver = this.setReceiver(attacker);
+            let damage = 0;
             if (attacker === 'player') {
+                damage = this.randomDamage(maxRange, minRange);
                 this.computerHealth -= damage;
+            }
+            if (attacker === 'computer') {
+                damage = this.randomDamage(maxRange, minRange);
                 this.playerHealth -= damage;
             }
+            this.addToLog(attacker, receiver, damage);
             if (this.checkWin()) {
                 return;
             }
-            this.addToLog(attacker, this.setReceiver(), damage);
         },
         attack: function() {
             this.attackController('player', 10, 3);
@@ -43,12 +48,6 @@ new Vue({
                 text: 'Player heals for ' + 10,
             });
         },
-        restart: function() {
-            this.isRunning = false;
-            this.playerHealth = 100;
-            this.computerHealth = 100;
-            this.clearLog();
-        },
         randomDamage: function(max, min) {
             return Math.floor(Math.random() * max, min);
         },
@@ -62,11 +61,16 @@ new Vue({
         },
         alertBox: function(message) {
             if (confirm(message)) {
+                this.isRunning = false;
                 this.startGame();
             } else {
                 this.isRunning = false;
             }
             return true;
+        },
+        restart: function() {
+            this.isRunning = false;
+            this.startGame();
         },
         addToLog: function(attacker, receiver, damage) {
             this.turns.unshift({
@@ -82,6 +86,12 @@ new Vue({
                 return 'computer';
             } else {
                 return 'player';
+            }
+        },
+        damageOutput: function(attacker, health) {
+            if (attacker === 'player') {
+                damage = this.randomDamage(maxRange, minRange);
+                this.computerHealth -= damage;
             }
         },
     },
