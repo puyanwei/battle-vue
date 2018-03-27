@@ -13,8 +13,8 @@ new Vue({
             this.computerHealth = 100;
         },
         attack: function() {
-            this.playerAttacks();
-            this.computerAttacks();
+            this.attacking('player', true, 10, 3);
+            this.attacking('computer', false, 10, 3);
             if (this.checkWin()) {
                 return;
             }
@@ -38,8 +38,8 @@ new Vue({
             this.playerHealth = 100;
             this.computerHealth = 100;
         },
-        randomDamage: function(min, max) {
-            return Math.floor(Math.random() * min, max);
+        randomDamage: function(max, min) {
+            return Math.floor(Math.random() * max, min);
         },
         checkWin: function() {
             if (this.computerHealth <= 0) {
@@ -57,25 +57,17 @@ new Vue({
             }
             return true;
         },
-        playerAttacks: function() {
-            let computerDamage = this.randomDamage(10, 3);
-            this.computerHealth -= computerDamage;
-            if (
-                this.turns.unshift({
-                    isPlayer: true,
-                    text: 'Player hits Computer for ' + computerDamage,
-                })
-            ) {
+        attacking: function(attacker, isPlayer, maxRange, minRange) {
+            let damage = this.randomDamage(maxRange, minRange);
+            if (isPlayer) {
+                this.computerHealth -= damage;
+            } else {
+                this.playerHealth -= damage;
             }
-        },
-        computerAttacks: function() {
-            let playerDamage = this.randomDamage(10, 3);
-            this.playerHealth -= playerDamage;
-
             if (
                 this.turns.unshift({
-                    isPlayer: false,
-                    text: 'Computer hits player for ' + playerDamage,
+                    isPlayer: isPlayer,
+                    text: attacker + ' hits Computer for ' + damage,
                 })
             ) {
             }
