@@ -4,6 +4,7 @@ new Vue({
         playerHealth: 100,
         computerHealth: 100,
         isRunning: false,
+        turns: [],
     },
     methods: {
         startGame: function() {
@@ -12,8 +13,8 @@ new Vue({
             this.computerHealth = 100;
         },
         attack: function() {
-            this.computerHealth -= this.randomDamage(10, 3);
-            this.playerHealth -= this.randomDamage(10, 3);
+            this.playerAttacks();
+            this.computerAttacks();
             if (this.checkWin()) {
                 return;
             }
@@ -55,6 +56,29 @@ new Vue({
                 this.isRunning = false;
             }
             return true;
+        },
+        playerAttacks: function() {
+            let computerDamage = this.randomDamage(10, 3);
+            this.computerHealth -= computerDamage;
+            if (
+                this.turns.unshift({
+                    isPlayer: true,
+                    text: 'Player hits Computer for ' + computerDamage,
+                })
+            ) {
+            }
+        },
+        computerAttacks: function() {
+            let playerDamage = this.randomDamage(10, 3);
+            this.playerHealth -= playerDamage;
+
+            if (
+                this.turns.unshift({
+                    isPlayer: false,
+                    text: 'Computer hits player for ' + playerDamage,
+                })
+            ) {
+            }
         },
     },
 });
