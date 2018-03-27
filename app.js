@@ -13,19 +13,23 @@ new Vue({
             this.computerHealth = 100;
             this.clearLog();
         },
-        attack: function() {
-            this.attacking('player', true, 10, 3);
-            this.attacking('computer', false, 10, 3);
+        attackController: function(attacker, isPlayer, maxRange, minRange) {
+            let damage = this.randomDamage(maxRange, minRange);
+            isPlayer
+                ? (this.computerHealth -= damage)
+                : (this.playerHealth -= damage);
             if (this.checkWin()) {
                 return;
             }
+            this.addToLog(attacker, isPlayer, damage);
+        },
+        attack: function() {
+            this.attackController('player', true, 10, 3);
+            this.attackController('computer', false, 10, 3);
         },
         specialAttack: function() {
-            this.attacking('player', true, 30, 5);
-            this.attacking('computer', false, 30, 5);
-            if (this.checkWin()) {
-                return;
-            }
+            this.attackController('player', true, 30, 5);
+            this.attackController('computer', false, 30, 5);
         },
         heal: function() {
             if (this.playerHealth <= 90) {
@@ -33,13 +37,10 @@ new Vue({
             } else {
                 this.playerHealth = 100;
             }
-            if (
-                this.turns.unshift({
-                    isPlayer: true,
-                    text: 'Player heals for ' + 10,
-                })
-            ) {
-            }
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player heals for ' + 10,
+            });
         },
         restart: function() {
             this.isRunning = false;
@@ -66,20 +67,11 @@ new Vue({
             }
             return true;
         },
-        attacking: function(attacker, isPlayer, maxRange, minRange) {
-            let damage = this.randomDamage(maxRange, minRange);
-            if (isPlayer) {
-                this.computerHealth -= damage;
-            } else {
-                this.playerHealth -= damage;
-            }
-            if (
-                this.turns.unshift({
-                    isPlayer: isPlayer,
-                    text: attacker + ' hits Computer for ' + damage,
-                })
-            ) {
-            }
+        addToLog: function(attacker, isPlayer, damage) {
+            this.turns.unshift({
+                isPlayer: isPlayer,
+                text: attacker + ' hits Computer for ' + damage,
+            });
         },
         clearLog: function() {
             this.turns = [];
