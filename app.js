@@ -11,6 +11,7 @@ new Vue({
             this.isRunning = true;
             this.playerHealth = 100;
             this.computerHealth = 100;
+            this.clearLog();
         },
         attack: function() {
             this.attacking('player', true, 10, 3);
@@ -44,6 +45,7 @@ new Vue({
             this.isRunning = false;
             this.playerHealth = 100;
             this.computerHealth = 100;
+            this.clearLog();
         },
         randomDamage: function(max, min) {
             return Math.floor(Math.random() * max, min);
@@ -78,6 +80,9 @@ new Vue({
                 })
             ) {
             }
+        },
+        clearLog: function() {
+            this.turns = [];
         },
     },
 });
