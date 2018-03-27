@@ -15,18 +15,14 @@ new Vue({
         },
         attackController: function(attacker, maxRange, minRange) {
             let damage = this.randomDamage(maxRange, minRange);
-            let receiver;
             if (attacker === 'player') {
                 this.computerHealth -= damage;
                 this.playerHealth -= damage;
-                receiver = 'computer';
-            } else {
-                receiver = 'player';
             }
             if (this.checkWin()) {
                 return;
             }
-            this.addToLog(attacker, receiver, damage);
+            this.addToLog(attacker, this.setReceiver(), damage);
         },
         attack: function() {
             this.attackController('player', 10, 3);
@@ -80,6 +76,13 @@ new Vue({
         },
         clearLog: function() {
             this.turns = [];
+        },
+        setReceiver: function(attacker) {
+            if (attacker === 'player') {
+                return 'computer';
+            } else {
+                return 'player';
+            }
         },
     },
 });
