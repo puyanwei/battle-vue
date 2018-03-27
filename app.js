@@ -25,17 +25,19 @@ new Vue({
                 this.playerHealth -= damage;
             }
             this.addToLog(attacker, receiver, damage);
-            if (this.checkWin()) {
-                return;
-            }
         },
         attack: function() {
             this.attackController('player', 10, 3);
+            if (this.checkWin()) {
+                return;
+            }
             this.attackController('computer', 10, 3);
+            this.checkWin();
         },
         specialAttack: function() {
             this.attackController('player', 30, 5);
             this.attackController('computer', 30, 5);
+            this.checkWin();
         },
         heal: function() {
             if (this.playerHealth <= 90) {
@@ -54,8 +56,10 @@ new Vue({
         checkWin: function() {
             if (this.computerHealth <= 0) {
                 this.alertBox('YOU WIN! New Game?');
+                return true;
             } else if (this.playerHealth <= 0) {
                 this.alertBox('LOSER!!! New Game?');
+                return true;
             }
             return false;
         },
